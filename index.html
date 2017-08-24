@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Optimización de rendimiento web para dinosaurios</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="https://media.giphy.com/media/NSodIu91KDWCs/giphy.gif">
+					<h1 style="text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,0.5)">Optimización de rendimiento web para dinosaurios</h1>
+				</section>
+				<section>
+					<h3>José Manuel Lucas / @jmlweb</h3>
+					<h4>Lead Frontend Developer @pccomponentes</h4>
+					<p><del>Freelance</del></p>
+					<p><del>Series Yonkis</del></p>
+					<p><del>Digio</del></p>
+				</section>
+				<section>
+					<h3>Conceptos importantes</h3>
+					<ul>
+						<li>First byte</li>
+						<li>Start render</li>
+						<li>Fully loaded</li>
+						<li><a href="https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index" target="_blank">Speed Index</a></li>
+					</ul>
+				</section>
+				<section>
+					<h3>¿Cómo medir el tiempo de carga?</h3>
+					<p><a href="http://webpagetest.org" target="_blank">webpagetest.org</a></p>
+					<p>Conexión 3G rápida</p>
+					<p>Emular navegador móvil</p>
+				</section>
+				<section>
+					<h3><a href="https://www.webpagetest.org/result/170420_0F_B8D/" target="_blank">Un ejemplo</a></h3>
+				</section>
+				<section>
+					<h3>Frontend en 2017</h3>
+					<ul>
+						<li>ES6/ES7</li>
+						<li>React/Angular/Vue</li>
+						<li>Universal/Isomorphic</li>
+						<li>PWA</li>
+						<li>Webpack Code Splitting</li>
+						<li>BEM/Atomic/SuitCSS</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Nuestro frontend inicial</h3>
+					<ul>
+						<li>jQuery v1.91</li>
+						<li>Bootstrap 4 (alpha 2)</li>
+						<li>Sass compilado localmente (directorio compartido)</li>
+						<li>CSS se sube por FTP</li>
+						<li>Fuera de repositorio GIT, Jenkins y demás</li>
+						<li>Cloudflare</li>
+					</ul>
+				</section>
+				<section>
+					<h2>¿Y por qué no?</h2>
+					<ul>
+						<li class="fragment grow">Rehacer la página</li>
+						<li class="fragment grow">Migrar a un sistema modular</li>
+						<li class="fragment grow">Dejar de cargar X fichero/feature</li>
+						<li class="fragment grow">Usar el stack de moda</li>
+					</ul>
+				</section>
+				<section>
+					<p>Hay MUCHO código y necesito pagar mi casa.</p>
+					<p>Mi jefe también necesita pagar las suyas.</p>
+					<iframe src="//giphy.com/embed/qbd9gWm8MxlG8?html5=true&hideSocial=true" width="400.79999999999995" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+				</section>
+				<section data-background="https://media.giphy.com/media/2dQ3FMaMFccpi/giphy.gif">
+					<h2 style="text-shadow: 0 0 10px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,0.5)">Cloudflare</h2>
+				</section>
+				<section>
+					<h3>Cloudflare 💖</h3>
+					<ul>
+						<li>CDN</li>
+						<li>HTTP/2 y SPDY</li>
+						<li>WebP y compresión de imágenes "on demand"</li>
+						<li>Caché</li>
+						<li>Anti DDOS</li>						
+					</ul>
+				</section>
+				<section>
+					<h3>CDN</h3>
+					<p>El cliente puede descargar los assets desde el datacenter más cercano.</p>
+					<p>Menor latencia y tiempo de descarga.</p>
+				</section>
+				<section>
+					<h3>HTTP/2</h3>
+					<p>Multiplexación de conexiones: Descargas simultáneas</p>
+				</section>
+				<section data-background="https://i.blogs.es/016855/peticiones_http2/1366_2000.jpg">
+				</section>
+				<section>
+					<iframe src="https://player.vimeo.com/video/148855633?title=0&byline=0&portrait=0" width="1024" height="576" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+				</section>
+				<section>
+					<h3>WebP</h3>
+					<p>Imágenes en torno a un 35% más ligeras</p>
+					<p>Se intercepta la petición buscando la cabecera:</p>
+					<p><strong>accept:</strong>image/webp,image/*,*/*;q=0.8</p>
+					<p>Si la encuentra devuelve el mime y la imagen adecuada</p>
+				</section>
+				<section>
+					<p><strong>Request URL:</strong> https://cdn.pccomponentes.com/img/iconos/menu-arrows-superfamilia.png</p>
+					<p><strong>content-disposition:</strong> inline; filename="menu-arrows-superfamilia.webp"</p>
+					<p><strong>content-type:</strong> image/webp</p>
+				</section>
+				<section>
+					<h3>¿Por dónde empezamos?</h3>
+					<p>Carga asíncrona de fuentes y almacenamiento en LocalStorage</p>
+					<p>Carga asíncrona de herramientas externas (análisis, métricas y demás)</p>
+					<p>Lazy loading de contenidos "escondidos" (tabs, modales...)</p>
+					<p>Concatenación de ficheros CSS base</p>
+				</section>
+				<section>
+					<h3>Preparando un stack frontend (medio) en condiciones</h3>
+					<p>Integración de ficheros fuente en repositorio</p>
+					<p>Gulp: Sass, PostCSS, imagemin, rev...</p>
+					<p>Tests unitarios y de retrospección</p>
+				</section>
+				<section>
+					<h3>Preparando un sistema de diseño modular</h3>
+					<p>Basado en BEMITCSS</p>
+					<p>Reducción de la especifidad</p>
+					<p>Reutilización de código</p>
+				</section>
+				<section>
+					<h3>¿Podemos hacer una prueba controlada?</h3>
+					<p>Cabecera</p>
+					<p>Menú</p>
+				</section>
+				<section>
+					<h3>¿Qué páginas son más importantes?</h3>
+					<ul>
+						<li class="fragment grow">Portada</li>
+						<li class="fragment grow">Listados</li>
+						<li class="fragment grow">Detalle de producto</li>
+					</ul>
+					<p class="fragment grow">¡¡¡A recodificar!!!</p>
+				</section>
+				<section>
+					<h3>Optimización básica de javascript</h3>
+					<ul>
+						<li>Cacheo de selectores</li>
+						<li>Evitar modificaciones del DOM en bucle</li>
+						<li>No abusar de las closures anidadas</li>
+						<li>Reducir variables globales</li>
+						<li>Minimizar el uso de setTimeout y setInterval</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Turno de preguntas</h3>
+				</section>
+				<section>
+					<iframe src="//giphy.com/embed/xUPOqo6E1XvWXwlCyQ?html5=true&hideSocial=true" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
